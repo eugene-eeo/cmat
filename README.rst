@@ -3,11 +3,12 @@ cmat
 
 Elegant, tiny library for coloring entries in matrices::
 
-    >>> from cmat import *
+    >>> from cmat.api import save, do, color_range, \
+    ...     render, cols, rows
     >>> from random import random
     >>> M = [[random() for _ in range(10)] for _ in range(10)]
     >>> save(do(M,
-    ...     color_range(M, intersection(cols(1,1), rows(1,...))),
+    ...     color_range(M, cols[1:1] & rows[1:...]),
     ...     render
     ... ), 'data.html')
 
