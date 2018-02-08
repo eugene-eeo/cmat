@@ -83,7 +83,7 @@ def rows(a, b):
 
     def gen(M):
         for i in range(max(0, a), min(b+1, len(M))):
-            for j in range(len(M)):
+            for j in range(len(M[0])):
                 yield i, j
 
     return is_within, gen
