@@ -20,6 +20,7 @@ matrices (read: tabular data).
 todo
 ----
 
+* implement proper color interpolation
 * write tests
 * documentation
 * gray color scheme
