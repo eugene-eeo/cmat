@@ -37,8 +37,8 @@ class Cols(Rows):
         return self.a <= pos.j <= self.b
 
     def gen(self, M):
-        for j in range(max(0, self.a), min(self.b+1, len(M[0]))):
-            for i in range(len(M)):
+        for i in range(len(M)):
+            for j in range(max(0, self.a), min(self.b+1, len(M[i]))):
                 yield Pos(i, j)
 
 
