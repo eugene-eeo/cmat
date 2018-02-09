@@ -1,27 +1,22 @@
+import csv
 import random
 from cmat.api import rows, save, do, color_range, render, cols
 from cmat.colorschemes import viridis, red_blue, pink
 
 random.seed(0xDEADBEEF)
-
-f = lambda: random.random() * 5
-M = [[f() for _ in range(10)] for _ in range(10)]
-
-save(do(M, color_range(M, cs=red_blue), render), '_example/1.html')
-save(do(M, color_range(M, cs=viridis), render),  '_example/2.html')
-save(do(M, color_range(M, cs=pink), render),     '_example/3.html')
+M = [[random.random() * 5 for _ in range(10)] for _ in range(10)]
 
 save(do(
     M,
     color_range(M, rows[1:2], pink),
     render,
-    ), '_example/4.html')
+    ), '_example/1.html')
 
 save(do(
     M,
     color_range(M, rows[1:2] | cols[1:2], pink),
     render,
-    ), '_example/5.html')
+    ), '_example/2.html')
 
 save(do(
     M,
@@ -29,7 +24,7 @@ save(do(
     color_range(M, cols[4:4], red_blue),
     color_range(M, rows[4:4], viridis),
     render,
-    ), '_example/5.html')
+    ), '_example/3.html')
 
 save(do(
     M,
@@ -37,10 +32,18 @@ save(do(
     color_range(M, rows[1:8] & cols[4:5], pink),
     color_range(M, rows[2:7] & cols[7:8], pink),
     render,
-    ), '_example/6.html')
+    ), '_example/4.html')
 
-save(do(
-    M[:4],
-    color_range(M, rows[1:...] & cols[1:2], pink),
-    render,
-    ), '_example/7.html')
+
+with open('_example/1545945', mode='r') as fp:
+    table = []
+    for i, row in enumerate(csv.reader(fp)):
+        if i > 0:
+            row[2:] = [float(x) for x in row[2:]]
+        table.append(row)
+    save(do(
+        table,
+        color_range(table, rows[1:...] & cols[16:16]),
+        color_range(table, rows[1:...] & cols[24:24]),
+        render,
+        ), '_example/disease.html')
