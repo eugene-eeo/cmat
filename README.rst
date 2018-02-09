@@ -20,11 +20,6 @@ matrices (read: tabular data).
 todo
 ----
 
-* predicate functions (√)
-
-  * ``where(lambda x: x.value == "something")``
-  * change internal Range interface
-
 * write tests
 * documentation
 * gray color scheme
