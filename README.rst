@@ -1,9 +1,7 @@
 cmat
 ====
 
-Elegant library for coloring entries in matrices:
-
-.. code-block:: python
+Elegant library for coloring entries in matrices::
 
     >>> from cmat.api import *
     >>> from random import random
@@ -16,7 +14,7 @@ Elegant library for coloring entries in matrices:
 
 Internally most things are iterator based, so it is very easy to write
 your own transforms and plug them into the pipeline. The aim is to
-expose a nice API for creating quick and dirty scripts to visualise
+expose a nice API to let one write quick and dirty scripts to visualise
 matrices (read: tabular data).
 
 todo
