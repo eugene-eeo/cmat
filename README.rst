@@ -19,8 +19,8 @@ matrices.
 todo
 ----
 
- - predicate functions
-    - change internal Range interface
- - write tests
- - documentation
- - gray color scheme
+- predicate functions
+   - change internal Range interface
+- write tests
+- documentation
+- gray color scheme
