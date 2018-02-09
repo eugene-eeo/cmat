@@ -10,9 +10,9 @@ with open('_example/1545945', mode='r') as fp:
         table.append(row)
     save(do(
         table,
-        color_range(table, rows[1:...] & cols[16:16], red_blue),
-        color_range(table, rows[1:...] & cols[24:24], red_blue),
+        color_range(rows[1:...] & cols[16:16], red_blue),
+        color_range(rows[1:...] & cols[24:24], red_blue),
         # compare between three different countries
-        color_range(table, rows[20:20] | rows[21:21] | rows[30:30], pink),
+        color_range(rows[20:20] | rows[21:21] | rows[30:30], pink),
         render,
         ), '_example/disease.html')

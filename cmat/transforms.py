@@ -18,17 +18,17 @@ def begin(matrix):
                for j, x in enumerate(row))
 
 
-def color_range(matrix, mask=rows[0:...], cs=red_blue):
-    lo = float('+inf')
-    hi = float('-inf')
-    for i, j in mask.gen(matrix):
-        x = matrix[i][j]
-        if is_numeric(x):
-            lo = min(x, lo)
-            hi = max(x, hi)
-    colorize = interpolate(cs, lo, hi)
+def color_range(mask=rows[0:...], cs=red_blue):
+    def iterator(matrix, entries):
+        lo = float('+inf')
+        hi = float('-inf')
+        for i, j in mask.gen(matrix):
+            x = matrix[i][j]
+            if is_numeric(x):
+                lo = min(x, lo)
+                hi = max(x, hi)
+        colorize = interpolate(cs, lo, hi)
 
-    def iterator(entries):
         for row in entries:
             yield (Entry(e.pos, e.value, colorize(e.value))
                    if (e.pos in mask and is_numeric(e.value))
@@ -40,7 +40,7 @@ def color_range(matrix, mask=rows[0:...], cs=red_blue):
 def do(matrix, *ops):
     rv = begin(matrix)
     for f in ops:
-        rv = f(rv)
+        rv = f(matrix, rv)
     return rv
 
 
@@ -52,7 +52,7 @@ def format(v):
     return str(v)
 
 
-def render(rows):
+def render(_, rows):
     yield '<table cellpadding="2" border="1">'
     for row in rows:
         yield '<tr>'
