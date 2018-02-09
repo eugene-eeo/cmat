@@ -1,7 +1,9 @@
 cmat
 ====
 
-Elegant library for coloring entries in matrices::
+Elegant library for coloring entries in matrices:
+
+.. code-block:: python
 
     >>> from cmat.api import *
     >>> from random import random
