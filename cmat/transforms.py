@@ -1,9 +1,15 @@
 from collections import namedtuple
-from .colorschemes import Color, interpolate
-from .ranges import Pos, Rows
+from decimal import Decimal
+from fractions import Fraction
+from .colorschemes import Color, interpolate, red_blue
+from .ranges import Pos, rows
 
 
 Entry = namedtuple('Entry', 'pos,value,color')
+
+
+def is_numeric(v):
+    return isinstance(v, (int, float, Decimal, Fraction))
 
 
 def begin(matrix):
@@ -12,20 +18,22 @@ def begin(matrix):
                for j, x in enumerate(row))
 
 
-def color_range(matrix, mask=Rows(0, ...), cs=None):
+def color_range(matrix, mask=rows[0:...], cs=red_blue):
     lo = float('+inf')
     hi = float('-inf')
     for i, j in mask.gen(matrix):
-        lo = min(matrix[i][j], lo)
-        hi = max(matrix[i][j], hi)
+        x = matrix[i][j]
+        if is_numeric(x):
+            lo = min(x, lo)
+            hi = max(x, hi)
     colorize = interpolate(cs, lo, hi)
 
     def iterator(entries):
         for row in entries:
-            yield (Entry(entry.pos, entry.value, colorize(entry.value))
-                   if entry.pos in mask
-                   else entry
-                   for entry in row)
+            yield (Entry(e.pos, e.value, colorize(e.value))
+                   if (e.pos in mask and is_numeric(e.value))
+                   else e
+                   for e in row)
     return iterator
 
 
@@ -39,7 +47,9 @@ def do(matrix, *ops):
 def format(v):
     if isinstance(v, int):
         return str(int(v))
-    return '%f' % (v,)
+    if isinstance(v, (float, Decimal, Fraction)):
+        return str(v)
+    return str(v)
 
 
 def render(rows):

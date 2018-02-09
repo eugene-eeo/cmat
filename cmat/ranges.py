@@ -82,3 +82,21 @@ class Union(Range):
             for pos in r.gen(M):
                 if not any(pos in r for r in c):
                     yield pos
+
+
+class _R:
+    def __getitem__(self, a):
+        if isinstance(a, int):
+            return Rows(a, a)
+        return Rows(a.start, a.stop)
+
+
+class _C:
+    def __getitem__(self, a):
+        if isinstance(a, int):
+            return Cols(a, a)
+        return Cols(a.start, a.stop)
+
+
+rows = _R()
+cols = _C()

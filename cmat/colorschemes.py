@@ -45,7 +45,8 @@ pink = [
 
 def interpolate(colorscheme, lo, hi):
     N = len(colorscheme) - 1
+    B = hi - lo
 
     def scale(x):
-        return colorscheme[int(N * (x - lo) / (hi - lo))]
+        return colorscheme[int(N * (x - lo)/B)]
     return scale
