@@ -14,13 +14,16 @@ Elegant library for coloring entries in matrices::
 Internally most things are iterator based, so it is very easy to write
 your own transforms and plug them into the pipeline. The aim is to
 expose a nice API for creating quick and dirty scripts to visualise
-matrices.
+matrices (read: tabular data).
 
 todo
 ----
 
-- predicate functions
-   - change internal Range interface
-- write tests
-- documentation
-- gray color scheme
+* predicate functions
+
+  * `where(lambda x: x.value == "something")`
+  * change internal Range interface
+
+* write tests
+* documentation
+* gray color scheme
