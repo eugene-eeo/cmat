@@ -1,11 +1,7 @@
-from collections import namedtuple
 from decimal import Decimal
 from fractions import Fraction
 from .colorschemes import Color, interpolate, red_blue
-from .ranges import Pos, rows
-
-
-Entry = namedtuple('Entry', 'pos,value,color')
+from .ranges import Pos, rows, Entry
 
 
 def is_numeric(v):
@@ -14,8 +10,8 @@ def is_numeric(v):
 
 def begin(matrix):
     for i, row in enumerate(matrix):
-        yield (Entry(Pos(i, j), x, Color('#FFF', '#000'))
-               for j, x in enumerate(row))
+        yield (Entry(matrix, Pos(i, j), Color('#FFF', '#000'))
+               for j in range(len(row)))
 
 
 def color_range(mask=rows[0:...], cs=red_blue):
@@ -27,13 +23,18 @@ def color_range(mask=rows[0:...], cs=red_blue):
             if is_numeric(x):
                 lo = min(x, lo)
                 hi = max(x, hi)
+
+        if lo == float('+inf'):
+            yield from entries
+            return
+
         colorize = interpolate(cs, lo, hi)
 
         for row in entries:
-            yield (Entry(e.pos, e.value, colorize(e.value))
-                   if (e.pos in mask and is_numeric(e.value))
-                   else e
-                   for e in row)
+            yield (entry.with_color(colorize(entry.value))
+                   if (entry.pos in mask and is_numeric(entry.value))
+                   else entry
+                   for entry in row)
     return iterator
 
 

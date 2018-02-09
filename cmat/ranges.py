@@ -1,7 +1,17 @@
 from collections import namedtuple
+from .utils import ColsView
 
 
 Pos = namedtuple('Pos', 'i,j')
+
+
+class Entry(namedtuple('Entry', 'data,pos,color')):
+    @property
+    def value(self):
+        return self.data[self.pos.i][self.pos.j]
+
+    def with_color(self, color):
+        return Entry(self.data, self.pos, color)
 
 
 class Range:
@@ -11,7 +21,7 @@ class Range:
     def __and__(self, other):
         return Intersection(self, other)
 
-    def __contains__(self, pos):
+    def __contains__(self, entry):
         raise NotImplementedError
 
     def gen(self, M):
@@ -55,13 +65,10 @@ class Intersection(Range):
         return Intersection(*self.ranges, other)
 
     def gen(self, M):
-        for i, r in enumerate(self.ranges):
-            c = self.ranges[:i]
-            for pos in r.gen(M):
-                # don't repeat points that have already been yielded, and
-                # only yield if it is within all other ranges
-                if not any(pos in r for r in c) and pos in self:
-                    yield pos
+        # only yield if it is within all other ranges
+        for pos in self.ranges[0].gen(M):
+            if pos in self:
+                yield pos
 
 
 class Union(Range):
@@ -84,11 +91,38 @@ class Union(Range):
                     yield pos
 
 
+class OkSet(Range):
+    def __init__(self, cols=None, rows=None):
+        self.cols = cols
+        self.rows = rows
+
+    def __contains__(self, pos):
+        return (
+            (not self.rows or pos.i in self.rows) and
+            (not self.cols or pos.j in self.cols)
+            )
+
+    def gen(self, M):
+        for i in (self.rows or range(len(M))):
+            if i >= len(M):
+                continue
+            for j in (self.cols or range(len(M[i]))):
+                if j < len(M[i]):
+                    yield Pos(i, j)
+
+
 class _R:
     def __getitem__(self, a):
         if isinstance(a, int):
             return Rows(a, a)
         return Rows(a.start, a.stop)
+
+    def where(self, M, f):
+        ok = set()
+        for i, row in enumerate(M):
+            if f(row):
+                ok.add(i)
+        return OkSet(rows=ok)
 
 
 class _C:
@@ -96,6 +130,13 @@ class _C:
         if isinstance(a, int):
             return Cols(a, a)
         return Cols(a.start, a.stop)
+
+    def where(self, M, f):
+        ok = set()
+        for j in range(len(M[0])):
+            if f(ColsView(M, j)):
+                ok.add(j)
+        return OkSet(cols=ok)
 
 
 rows = _R()

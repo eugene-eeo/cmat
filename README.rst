@@ -8,7 +8,8 @@ Elegant library for coloring entries in matrices::
     >>> M = [[random() for _ in range(10)] for _ in range(10)]
     >>> save(do(M,
     ...     color_range(cols[1:1] & rows[1:...]),
-    ...     render
+    ...     color_range(rows.where(M, lambda r: r[0] >= 0.5)),
+    ...     render,
     ... ), 'data.html')
 
 Internally most things are iterator based, so it is very easy to write
@@ -19,9 +20,9 @@ matrices (read: tabular data).
 todo
 ----
 
-* predicate functions
+* predicate functions (√)
 
-  * `where(lambda x: x.value == "something")`
+  * ``where(lambda x: x.value == "something")``
   * change internal Range interface
 
 * write tests
