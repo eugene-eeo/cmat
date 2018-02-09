@@ -19,5 +19,10 @@ with open('_example/1545945', mode='r') as fp:
                     pink),
         # compare between two diseases
         color_range(cols.where(table, lambda c: (c[0] in ["disa2","disa3"])), viridis),
+        color_range(
+            rows.where(table, lambda r: ('TUN' <= r[0] <= 'TZA')) &
+            cols.where(table, lambda c: (c[0] in ['disa2', 'disa3', 'disa4', 'disa5'])),
+            pink,
+        ),
         render,
         ), '_example/disease.html')

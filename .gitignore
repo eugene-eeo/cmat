@@ -62,3 +62,4 @@ docs/_build/
 target/
 
 .pytest_cache/
+_example/disease.html
