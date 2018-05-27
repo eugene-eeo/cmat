@@ -87,6 +87,7 @@ class Union(Range):
         for i, r in enumerate(self.ranges):
             c = self.ranges[:i]
             for pos in r.gen(M):
+                # if we haven't seen this position before then yield it
                 if not any(pos in r for r in c):
                     yield pos
 
@@ -98,8 +99,8 @@ class OkSet(Range):
 
     def __contains__(self, pos):
         return (
-            (not self.rows or pos.i in self.rows) and
-            (not self.cols or pos.j in self.cols)
+            (self.rows is None or pos.i in self.rows) and
+            (self.cols is None or pos.j in self.cols)
             )
 
     def gen(self, M):

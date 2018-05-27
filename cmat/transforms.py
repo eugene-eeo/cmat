@@ -16,15 +16,17 @@ def begin(matrix):
 
 def color_range(mask=rows[0:...], cs=red_blue):
     def iterator(matrix, entries):
+        once = False
         lo = float('+inf')
         hi = float('-inf')
         for i, j in mask.gen(matrix):
+            once = True
             x = matrix[i][j]
             if is_numeric(x):
                 lo = min(x, lo)
                 hi = max(x, hi)
 
-        if lo == float('+inf'):
+        if not once:
             yield from entries
             return
 
@@ -65,8 +67,8 @@ def render(_, rows):
     yield '</table>'
 
 
-def save(render, f):
-    with open(f, 'w') as fp:
+def save(fname, render):
+    with open(fname, 'w') as fp:
         for line in render:
             fp.write(line)
             fp.write('\n')

@@ -49,11 +49,10 @@ def test_nested():
 
 
 @pytest.fixture(params=[
-     (None,  None),
-     ({},    {}),
-     ({1},   {}),
-     ({},    {1}),
-     ({1,2}, {0,1,2,3}),
+     (None,    None),
+     ({1},     {}),
+     ({},      {1}),
+     ({1,2},   {0,1,2,3}),
      ({5,1,2}, {10}),
 ])
 def row_col_set(request):
@@ -64,8 +63,8 @@ def test_okset_contains(row_col_set):
      rows, cols = row_col_set
      r = OkSet(rows=rows, cols=cols)
 
-     rows = rows or {0, 1, 2}
-     cols = cols or {0, 1, 2}
+     rows = {0, 1, 2} if rows is None else {}
+     cols = {0, 1, 2} if cols is None else {}
 
      for i, j in product(rows, cols):
           assert Pos(i, j) in r

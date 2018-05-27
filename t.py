@@ -9,7 +9,7 @@ with open('_example/1545945', mode='r') as fp:
         if i > 0:
             row[2:] = [float(x) for x in row[2:]]
         table.append(row)
-    save(do(
+    save('_example/disease.html', do(
         table,
         color_range(rows[1:...] & cols[16]),
         # pick a color scheme
@@ -21,8 +21,8 @@ with open('_example/1545945', mode='r') as fp:
         color_range(cols.where(table, lambda c: (c[0] in ["disa2","disa3"])), viridis),
         color_range(
             rows.where(table, lambda r: ('TUN' <= r[0] <= 'TZA')) &
-            cols.where(table, lambda c: (c[0] in ['disa2', 'disa3', 'disa4', 'disa5'])),
+            cols.where(table, lambda c: ('disa2' <= c[0] <= 'disa5')),
             pink,
-        ),
+            ),
         render,
-        ), '_example/disease.html')
+        ))
